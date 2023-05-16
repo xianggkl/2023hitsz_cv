@@ -258,14 +258,19 @@ def link_edges(strong_edges, weak_edges):
     # references intact
     weak_edges = np.copy(weak_edges)
     edges = np.copy(strong_edges)
-
+    
     ### YOUR CODE HERE
-    for indice in indices:
-        # get the neighbors rectangle
-        neigbours = get_neighbors(indice[1], indice[0], H, W)
-        for neigbour in neigbours:
-            if(weak_edges[neigbour] == 1):
-                edges[neigbour] = 1
+    flag = True
+    while(flag):
+        flag = False
+        for indice in indices:
+            # get the neighbors rectangle
+            neigbours = get_neighbors(indice[0], indice[1], H, W)
+            for neigbour in neigbours:
+                if(weak_edges[neigbour] == 1 and edges[neigbour] != 1):
+                    flag = True
+                    edges[neigbour] = 1
+        indices = np.stack(np.nonzero(edges)).T
     ### END YOUR CODE
 
     return edges
